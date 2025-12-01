@@ -1,0 +1,47 @@
+{
+  "name": "recipe-website-api",
+  "version": "1.0.0",
+  "description": "Backend API for Recipe Website - IUT MMI Backend Development with NodeJS Project",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
+  },
+  "keywords": [
+    "recipe",
+    "api",
+    "nodejs",
+    "express",
+    "sqlite",
+    "backend",
+    "rest"
+  ],
+  "author": "IUT MMI Student",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "express-session": "^1.18.2",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.1",
+    "supertest": "^6.3.3"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/recipe-website-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/recipe-website-api/issues"
+  },
+  "homepage": "https://github.com/your-username/recipe-website-api#readme"
+}
