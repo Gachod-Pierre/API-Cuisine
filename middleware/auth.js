@@ -1,28 +1,79 @@
+const jwt = require('jsonwebtoken');
+
 /**
- * Authentication middleware using sessions
- * Checks if user is logged in via session
+ * Authentication middleware using JWT tokens
+ * Checks if user is logged in via JWT token in Authorization header
  */
-const authenticateSession = (req, res, next) => {
-    // Check if session exists and has user data
-    if (!req.session || !req.session.user) {
-        return res.status(401).json({
-            success: false,
-            message: 'Access denied. Please login to continue.'
-        });
+const authenticate = (req, res, next) => {
+    try {
+        // Get token from Authorization header
+        const authHeader = req.headers.authorization;
+        
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return res.status(401).json({
+                success: false,
+                message: 'Access denied. Please provide a valid token.'
+            });
+        }
+
+        // Extract token (remove 'Bearer ' prefix)
+        const token = authHeader.substring(7);
+
+        // Verify token
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key-change-in-production');
+
+        // Attach user info to request object
+        req.user = {
+            user_id: decoded.user_id,
+            username: decoded.username,
+            email: decoded.email,
+            is_admin: decoded.is_admin || false
+        };
+
+        next();
+    } catch (error) {
+        if (error.name === 'JsonWebTokenError') {
+            return res.status(401).json({
+                success: false,
+                message: 'Invalid token. Please login again.'
+            });
+        } else if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({
+                success: false,
+                message: 'Token expired. Please login again.'
+            });
+        } else {
+            return res.status(401).json({
+                success: false,
+                message: 'Access denied. Please login to continue.'
+            });
+        }
     }
-    // Attach user info to request object
-    req.user = req.session.user;
-    next();
 };
 
 /**
  * Optional authentication middleware
- * Attaches user info if session exists, but doesn't block request
+ * Attaches user info if valid token exists, but doesn't block request
  */
 const optionalAuth = (req, res, next) => {
-    if (req.session && req.session.user) {
-        req.user = req.session.user;
-    } else {
+    try {
+        const authHeader = req.headers.authorization;
+        
+        if (authHeader && authHeader.startsWith('Bearer ')) {
+            const token = authHeader.substring(7);
+            const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key-change-in-production');
+            
+            req.user = {
+                user_id: decoded.user_id,
+                username: decoded.username,
+                email: decoded.email,
+                is_admin: decoded.is_admin || false
+            };
+        } else {
+            req.user = null;
+        }
+    } catch (error) {
+        // If token is invalid, just set user to null and continue
         req.user = null;
     }
 
@@ -127,21 +178,16 @@ const checkOwnership = (tableName, idColumn, paramName = 'id') => {
 
 /**
  * Middleware to check if user is an admin
- * Use after authenticateSession
+ * Use after authenticate
  * For future use: admin-only routes (manage all users, moderate content, etc.)
  */
 const requireAdmin = (req, res, next) => {
-    // Must be authenticated first
-    if (!req.session || !req.session.user) {
+    // Must be authenticated first (should be used after authenticate middleware)
+    if (!req.user) {
         return res.status(401).json({
             success: false,
             message: 'Access denied. Please login to continue.'
         });
-    }
-
-    // Attach user info if not already done
-    if (!req.user) {
-        req.user = req.session.user;
     }
 
     // Check if user is admin
@@ -157,9 +203,7 @@ const requireAdmin = (req, res, next) => {
 
 module.exports = {
     // Authentication middlewares
-    authenticateSession,
-    authenticate: authenticateSession,  // Recommended: Clear, simple alias
-    authenticateToken: authenticateSession,  // Deprecated: kept for backward compatibility
+    authenticate,
     optionalAuth,
 
     // Ownership middlewares

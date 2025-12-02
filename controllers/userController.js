@@ -1,4 +1,24 @@
 const User = require('../models/User');
+const jwt = require('jsonwebtoken');
+
+/**
+ * Generate JWT token for a user
+ * @param {Object} user - User object with user_id, username, email, is_admin
+ * @returns {string} JWT token
+ */
+const generateToken = (user) => {
+    const payload = {
+        user_id: user.user_id,
+        username: user.username,
+        email: user.email,
+        is_admin: user.is_admin || false
+    };
+
+    const secret = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+    const expiresIn = process.env.JWT_EXPIRES_IN || '7d'; // Default: 7 days
+
+    return jwt.sign(payload, secret, { expiresIn });
+};
 
 /**
  * Register a new user
@@ -43,19 +63,20 @@ exports.register = async (req, res, next) => {
             is_admin: is_admin || false
         });
 
-        // Create session for the new user
-        req.session.user = {
+        // Generate JWT token
+        const token = generateToken({
             user_id: newUser.user_id,
             username: newUser.username,
             email: newUser.email,
             is_admin: newUser.is_admin || false
-        };
+        });
 
         res.status(201).json({
             success: true,
             message: 'User registered successfully',
             data: {
-                user: newUser.toJSON()
+                user: newUser.toJSON(),
+                token
             }
         });
     } catch (error) {
@@ -97,19 +118,20 @@ exports.login = async (req, res, next) => {
             });
         }
 
-        // Create session with user data
-        req.session.user = {
+        // Generate JWT token
+        const token = generateToken({
             user_id: user.user_id,
             username: user.username,
             email: user.email,
             is_admin: user.is_admin || false
-        };
+        });
 
         res.status(200).json({
             success: true,
             message: 'Login successful',
             data: {
-                user: user.toJSON()
+                user: user.toJSON(),
+                token
             }
         });
     } catch (error) {
@@ -121,25 +143,20 @@ exports.login = async (req, res, next) => {
  * Logout user
  * POST /api/users/logout
  * Requires authentication
+ * Note: With JWT, logout is typically handled client-side by removing the token.
+ * This endpoint is kept for consistency and can be used to invalidate tokens
+ * if implementing a token blacklist in the future.
  */
 exports.logout = async (req, res, next) => {
     try {
-        // Destroy the session
-        req.session.destroy((err) => {
-            if (err) {
-                return res.status(500).json({
-                    success: false,
-                    message: 'Could not logout. Please try again.'
-                });
-            }
-
-            // Clear the session cookie
-            res.clearCookie('connect.sid');
-
-            res.status(200).json({
-                success: true,
-                message: 'Logged out successfully'
-            });
+        // With JWT, logout is handled client-side by removing the token
+        // In a stateless JWT system, we can't invalidate tokens server-side
+        // unless we implement a token blacklist (which requires storing tokens)
+        // For now, we just confirm logout - client should remove token from storage
+        
+        res.status(200).json({
+            success: true,
+            message: 'Logged out successfully. Please remove the token from client storage.'
         });
     } catch (error) {
         next(error);

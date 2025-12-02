@@ -1,6 +1,5 @@
 const express = require('express');
 const path = require('path');
-const session = require('express-session');
 require('dotenv').config();
 
 const app = express();
@@ -17,18 +16,6 @@ const errorHandler = require('./middleware/errorHandler');
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Session configuration
-app.use(session({
-    secret: process.env.SESSION_SECRET || 'your-secret-key-change-in-production',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        secure: process.env.NODE_ENV === 'production', // Use secure cookies in production (HTTPS)
-        httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000 // 24 hours
-    }
-}));
 
 // CORS middleware (if needed for frontend testing)
 app.use((req, res, next) => {
@@ -89,7 +76,7 @@ app.get('/help', (req, res) => {
             'PUT /api/recipes/:id': 'Update recipe (requires auth)',
             'DELETE /api/recipes/:id': 'Delete recipe (requires auth)',
             'POST /api/users/register': 'Register new user',
-            'POST /api/users/login': 'Login and get JWT token',
+            'POST /api/users/login': 'Login and get JWT token (returns token in response)',
             'GET /api/users/profile': 'Get user profile (requires auth)',
             'GET /api/users/favorites': 'Get favorite recipes (requires auth)',
             'POST /api/users/favorites/:recipeId': 'Add to favorites (requires auth)'
