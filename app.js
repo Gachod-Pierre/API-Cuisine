@@ -10,6 +10,7 @@ const cuisineRoutes = require('./routes/cuisines');
 const ingredientRoutes = require('./routes/ingredients');
 const userRoutes = require('./routes/users');
 const goalsRoutes = require('./routes/goals')
+const dietaryInformationRoutes = require('./routes/dietaryInformations')
 
 // Import middleware
 const errorHandler = require('./middleware/errorHandler');
@@ -43,6 +44,7 @@ app.use('/api/cuisines', cuisineRoutes);
 app.use('/api/ingredients', ingredientRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/goals', goalsRoutes);
+app.use('/api/dietaryInformations', dietaryInformationRoutes);
 
 // Home route
 app.get('/', (req, res) => {
