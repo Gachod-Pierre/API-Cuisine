@@ -3,18 +3,21 @@
 Complete guide for testing all API endpoints using Postman.
 
 ## Table of Contents
+
 1. [Setup](#setup)
 2. [Authentication](#authentication)
 3. [Testing Users Endpoints](#users-endpoints)
 4. [Testing Cuisines Endpoints](#cuisines-endpoints)
 5. [Testing Ingredients Endpoints](#ingredients-endpoints)
 6. [Testing Recipes Endpoints](#recipes-endpoints)
+7. [Testing Instructions Endpoints](#instructions-endpoints)
 
 ---
 
 ## Setup
 
 ### 1. Start Your Server
+
 ```bash
 npm start
 # or for development mode
@@ -47,6 +50,7 @@ Server will run on: `http://localhost:3000`
 The API uses **session-based authentication**. After logging in, the session cookie is automatically stored and sent with subsequent requests.
 
 ### Flow:
+
 1. Register a new user (or use existing)
 2. Login to get session cookie
 3. Session cookie is automatically sent with all requests
@@ -61,6 +65,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 **Endpoint:** `POST {{base_url}}/api/users/register`
 
 **Body (JSON):**
+
 ```json
 {
   "username": "testuser",
@@ -72,6 +77,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 ```
 
 **Expected Response (201):**
+
 ```json
 {
   "success": true,
@@ -91,6 +97,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 **Endpoint:** `POST {{base_url}}/api/users/register`
 
 **Body (JSON):**
+
 ```json
 {
   "username": "admin",
@@ -111,6 +118,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 **Endpoint:** `POST {{base_url}}/api/users/login`
 
 **Body (JSON):**
+
 ```json
 {
   "email": "test@example.com",
@@ -119,6 +127,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 ```
 
 **Expected Response (200):**
+
 ```json
 {
   "success": true,
@@ -159,6 +168,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 **Authentication:** Required
 
 **Body (JSON):**
+
 ```json
 {
   "username": "updateduser",
@@ -176,6 +186,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 **Authentication:** Required
 
 **Body (JSON):**
+
 ```json
 {
   "currentPassword": "password123",
@@ -210,6 +221,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 **No authentication required**
 
 **Expected Response (200):**
+
 ```json
 {
   "success": true,
@@ -236,6 +248,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 **No authentication required**
 
 **Expected Response (200):**
+
 ```json
 {
   "success": true,
@@ -266,6 +279,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 **Important:** You must login as admin first!
 
 **Body (JSON):**
+
 ```json
 {
   "name": "Japanese"
@@ -273,6 +287,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 ```
 
 **Expected Response (201):**
+
 ```json
 {
   "success": true,
@@ -285,6 +300,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 ```
 
 **Error if not admin (403):**
+
 ```json
 {
   "success": false,
@@ -301,6 +317,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 **Authentication:** Required (Admin only)
 
 **Body (JSON):**
+
 ```json
 {
   "name": "Japanese Cuisine"
@@ -308,6 +325,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 ```
 
 **Expected Response (200):**
+
 ```json
 {
   "success": true,
@@ -328,6 +346,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 **Authentication:** Required (Admin only)
 
 **Expected Response (200):**
+
 ```json
 {
   "success": true,
@@ -336,6 +355,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 ```
 
 **Error if cuisine is used by recipes (409):**
+
 ```json
 {
   "success": false,
@@ -354,6 +374,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 **No authentication required**
 
 **Expected Response (200):**
+
 ```json
 {
   "success": true,
@@ -382,6 +403,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 **No authentication required**
 
 **Expected Response (200):**
+
 ```json
 {
   "success": true,
@@ -412,6 +434,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 **Authentication:** Required (any logged-in user)
 
 **Body (JSON):**
+
 ```json
 {
   "name": "Basil",
@@ -420,6 +443,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 ```
 
 **Expected Response (201):**
+
 ```json
 {
   "success": true,
@@ -441,6 +465,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 **Authentication:** Required (any logged-in user)
 
 **Body (JSON):**
+
 ```json
 {
   "name": "Fresh Basil",
@@ -449,6 +474,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 ```
 
 **Expected Response (200):**
+
 ```json
 {
   "success": true,
@@ -470,6 +496,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 **Authentication:** Required (any logged-in user)
 
 **Expected Response (200):**
+
 ```json
 {
   "success": true,
@@ -478,6 +505,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 ```
 
 **Error if ingredient is used by recipes (409):**
+
 ```json
 {
   "success": false,
@@ -496,6 +524,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 **No authentication required**
 
 **Expected Response (200):**
+
 ```json
 {
   "success": true,
@@ -524,6 +553,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 **No authentication required**
 
 **Expected Response (200):**
+
 ```json
 {
   "success": true,
@@ -566,6 +596,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 **Description:** Returns all recipes created by the currently logged-in user
 
 **Expected Response (200):**
+
 ```json
 {
   "success": true,
@@ -600,6 +631,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 ```
 
 **If no recipes created yet:**
+
 ```json
 {
   "success": true,
@@ -610,6 +642,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 ```
 
 **Notes:**
+
 - Recipes are sorted by recipe ID (newest first)
 - Includes average rating and total number of ratings for each recipe
 - Automatically uses the logged-in user's ID from session
@@ -648,6 +681,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 **Authentication:** Required (any logged-in user)
 
 **Body (JSON):**
+
 ```json
 {
   "title": "Spaghetti Carbonara",
@@ -661,6 +695,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 ```
 
 **Expected Response (201):**
+
 ```json
 {
   "success": true,
@@ -683,6 +718,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 **Authentication:** Required
 
 **Body (JSON):**
+
 ```json
 {
   "ingredient_id": 2,
@@ -691,6 +727,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 ```
 
 **Expected Response (201):**
+
 ```json
 {
   "success": true,
@@ -707,6 +744,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 **Authentication:** Required (must own recipe or be admin)
 
 **Body (JSON):**
+
 ```json
 {
   "title": "Authentic Spaghetti Carbonara"
@@ -714,6 +752,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 ```
 
 **Expected Response (200):**
+
 ```json
 {
   "success": true,
@@ -730,6 +769,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 **Authentication:** Required (must own recipe or be admin)
 
 **Body (JSON):**
+
 ```json
 {
   "AllergiesInformation_id": 3
@@ -745,6 +785,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 **Authentication:** Required (must own recipe or be admin)
 
 **Body (JSON):**
+
 ```json
 {
   "description": "Boil pasta in salted water until al dente"
@@ -760,6 +801,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 **Authentication:** Required (must own recipe or be admin)
 
 **Expected Response (200):**
+
 ```json
 {
   "success": true,
@@ -784,6 +826,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 **Authentication:** Required
 
 **Body (JSON):**
+
 ```json
 {
   "rating": 5,
@@ -800,6 +843,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 **Authentication:** Required
 
 **Body (JSON):**
+
 ```json
 {
   "rating": 4,
@@ -825,16 +869,374 @@ The API uses **session-based authentication**. After logging in, the session coo
 
 ---
 
-## Testing Workflow
+## Instructions Endpoints
+
+### 1. Get All Instructions for a Recipe
+
+**Endpoint:** `GET {{base_url}}/api/instructions/recipe/:recipeId`
+
+**No authentication required**
+
+**Example:** `GET {{base_url}}/api/instructions/recipe/1`
+
+**Expected Response (200):**
+
+```json
+{
+  "success": true,
+  "count": 3,
+  "data": [
+    {
+      "instruction_id": 1,
+      "step_number": 1,
+      "description": "Preheat oven to 180°C"
+    },
+    {
+      "instruction_id": 2,
+      "step_number": 2,
+      "description": "Chop all vegetables into small pieces"
+    },
+    {
+      "instruction_id": 3,
+      "step_number": 3,
+      "description": "Mix vegetables in a large bowl"
+    }
+  ]
+}
+```
+
+---
+
+### 2. Get Instruction by ID
+
+**Endpoint:** `GET {{base_url}}/api/instructions/:id`
+
+**No authentication required**
+
+**Example:** `GET {{base_url}}/api/instructions/1`
+
+**Expected Response (200):**
+
+```json
+{
+  "success": true,
+  "data": {
+    "instruction_id": 1,
+    "recipe_id": 1,
+    "step_number": 1,
+    "description": "Preheat oven to 180°C"
+  }
+}
+```
+
+---
+
+### 3. Add Single Instruction to Recipe
+
+**Endpoint:** `POST {{base_url}}/api/instructions`
+
+**Authentication:** Required (must own the recipe)
+
+**Body (JSON):**
+
+```json
+{
+  "recipe_id": 1,
+  "step_number": 4,
+  "description": "Spread mixture on baking sheet and bake for 45 minutes"
+}
+```
+
+**Expected Response (201):**
+
+```json
+{
+  "success": true,
+  "message": "Instruction added successfully",
+  "data": {
+    "instruction_id": 4,
+    "recipe_id": 1,
+    "step_number": 4,
+    "description": "Spread mixture on baking sheet and bake for 45 minutes"
+  }
+}
+```
+
+**Error if recipe doesn't exist (404):**
+
+```json
+{
+  "success": false,
+  "message": "Recipe not found"
+}
+```
+
+**Error if user doesn't own recipe (403):**
+
+```json
+{
+  "success": false,
+  "message": "Unauthorized: You do not own this recipe"
+}
+```
+
+**Error if missing required fields (400):**
+
+```json
+{
+  "success": false,
+  "message": "recipe_id, step_number, and description are required"
+}
+```
+
+---
+
+### 4. Add Multiple Instructions at Once (Batch)
+
+**Endpoint:** `POST {{base_url}}/api/instructions/batch/add`
+
+**Authentication:** Required (must own the recipe)
+
+**Description:** Add multiple instructions in a single request
+
+**Body (JSON):**
+
+```json
+{
+  "recipe_id": 1,
+  "instructions": [
+    {
+      "step_number": 1,
+      "description": "Preheat oven to 180°C"
+    },
+    {
+      "step_number": 2,
+      "description": "Chop all vegetables"
+    },
+    {
+      "step_number": 3,
+      "description": "Mix vegetables in a bowl"
+    },
+    {
+      "step_number": 4,
+      "description": "Bake for 45 minutes"
+    }
+  ]
+}
+```
+
+**Expected Response (201):**
+
+```json
+{
+  "success": true,
+  "message": "4 instruction(s) added successfully",
+  "data": [
+    {
+      "instruction_id": 1,
+      "recipe_id": 1,
+      "step_number": 1,
+      "description": "Preheat oven to 180°C"
+    },
+    {
+      "instruction_id": 2,
+      "recipe_id": 1,
+      "step_number": 2,
+      "description": "Chop all vegetables"
+    },
+    {
+      "instruction_id": 3,
+      "recipe_id": 1,
+      "step_number": 3,
+      "description": "Mix vegetables in a bowl"
+    },
+    {
+      "instruction_id": 4,
+      "recipe_id": 1,
+      "step_number": 4,
+      "description": "Bake for 45 minutes"
+    }
+  ]
+}
+```
+
+**Error if recipe doesn't exist (404):**
+
+```json
+{
+  "success": false,
+  "message": "Recipe not found"
+}
+```
+
+**Error if user doesn't own recipe (403):**
+
+```json
+{
+  "success": false,
+  "message": "Unauthorized: You do not own this recipe"
+}
+```
+
+---
+
+### 5. Update Instruction Description
+
+**Endpoint:** `PUT {{base_url}}/api/instructions/:id/recipe/:recipeId`
+
+**Authentication:** Required (must own the recipe)
+
+**Example:** `PUT {{base_url}}/api/instructions/1/recipe/1`
+
+**Body (JSON):**
+
+```json
+{
+  "description": "Preheat oven to 200°C (increased from 180°C for better results)"
+}
+```
+
+**Expected Response (200):**
+
+```json
+{
+  "success": true,
+  "message": "Instruction updated successfully"
+}
+```
+
+**Error if instruction doesn't exist (404):**
+
+```json
+{
+  "success": false,
+  "message": "Instruction not found"
+}
+```
+
+**Error if recipe doesn't exist (404):**
+
+```json
+{
+  "success": false,
+  "message": "Recipe not found"
+}
+```
+
+**Error if user doesn't own recipe (403):**
+
+```json
+{
+  "success": false,
+  "message": "Unauthorized: You do not own this recipe"
+}
+```
+
+---
+
+### 6. Update Instruction Step Number
+
+**Endpoint:** `PUT {{base_url}}/api/instructions/:id/recipe/:recipeId/step`
+
+**Authentication:** Required (must own the recipe)
+
+**Example:** `PUT {{base_url}}/api/instructions/2/recipe/1/step`
+
+**Description:** Change the order of steps by updating the step number
+
+**Body (JSON):**
+
+```json
+{
+  "step_number": 1
+}
+```
+
+**Expected Response (200):**
+
+```json
+{
+  "success": true,
+  "message": "Instruction step number updated successfully"
+}
+```
+
+**Error if step_number is invalid (400):**
+
+```json
+{
+  "success": false,
+  "message": "step_number must be a positive integer"
+}
+```
+
+**Error if instruction doesn't exist (404):**
+
+```json
+{
+  "success": false,
+  "message": "Instruction not found"
+}
+```
+
+---
+
+### 7. Delete Instruction
+
+**Endpoint:** `DELETE {{base_url}}/api/instructions/:id/recipe/:recipeId`
+
+**Authentication:** Required (must own the recipe)
+
+**Example:** `DELETE {{base_url}}/api/instructions/4/recipe/1`
+
+**Expected Response (200):**
+
+```json
+{
+  "success": true,
+  "message": "Instruction deleted successfully"
+}
+```
+
+**Error if instruction doesn't exist (404):**
+
+```json
+{
+  "success": false,
+  "message": "Instruction not found"
+}
+```
+
+**Error if recipe doesn't exist (404):**
+
+```json
+{
+  "success": false,
+  "message": "Recipe not found"
+}
+```
+
+**Error if user doesn't own recipe (403):**
+
+```json
+{
+  "success": false,
+  "message": "Unauthorized: You do not own this recipe"
+}
+```
+
+---
 
 ### Recommended Testing Order:
 
 1. **Setup Phase**
+
    - Start server
    - Test `GET /` to verify server is running
    - Test `GET /api/users` to see existing users
 
 2. **User Registration & Authentication**
+
    - Register regular user
    - Register admin user
    - Login as regular user
@@ -843,6 +1245,7 @@ The API uses **session-based authentication**. After logging in, the session coo
    - Login as admin
 
 3. **Test Cuisines (as Admin)**
+
    - Get all cuisines
    - Get cuisine by ID
    - Create new cuisine
@@ -850,6 +1253,7 @@ The API uses **session-based authentication**. After logging in, the session coo
    - Delete cuisine
 
 4. **Test Ingredients (as Regular User)**
+
    - Get all ingredients
    - Get ingredient by ID
    - Create new ingredient
@@ -857,6 +1261,7 @@ The API uses **session-based authentication**. After logging in, the session coo
    - Delete ingredient
 
 5. **Test Recipes**
+
    - Get all recipes
    - Get recipe by ID
    - Get my recipes (logged-in user's recipes)
@@ -867,7 +1272,17 @@ The API uses **session-based authentication**. After logging in, the session coo
    - Get ratings for recipe
    - Delete recipe
 
-6. **Test User Favorites**
+6. **Test Instructions**
+
+   - Get all instructions for a recipe
+   - Get instruction by ID
+   - Add single instruction to recipe
+   - Add multiple instructions at once (batch)
+   - Update instruction description
+   - Update instruction step number
+   - Delete instruction
+
+7. **Test User Favorites**
    - Add recipe to favorites
    - Get favorites
    - Remove from favorites
@@ -892,6 +1307,7 @@ The API uses **session-based authentication**. After logging in, the session coo
 ### Session/Cookie Issues
 
 If authenticated requests return 401:
+
 1. Make sure you logged in successfully first
 2. Check that Postman is set to automatically manage cookies
 3. Try logging in again
@@ -900,6 +1316,7 @@ If authenticated requests return 401:
 ### Admin Access Required
 
 If you get "Forbidden. Admin access required":
+
 1. Logout current user
 2. Login as admin user (registered with `is_admin: true`)
 3. Try the request again
@@ -907,6 +1324,7 @@ If you get "Forbidden. Admin access required":
 ### Foreign Key Constraint Errors
 
 If you can't delete a cuisine/ingredient:
+
 - The resource is being used by recipes
 - Either delete the recipes first, or update them to use a different cuisine/ingredient
 
